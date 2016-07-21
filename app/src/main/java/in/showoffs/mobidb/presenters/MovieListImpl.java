@@ -27,4 +27,14 @@ public class MovieListImpl implements MovieListPresenter {
         movieListListener.showError(false);
         movieListListener.onMovieListLoaded();
     }
+
+    @Override
+    public void refreshLoadData() {
+
+    }
+
+    @Override
+    public void sortData() {
+
+    }
 }
