@@ -11,5 +11,5 @@ public interface MovieListListener {
     void showError(boolean show);
     void onMovieListLoaded();
     void onErrorLoading();
-    Context getContext();
+    Context getTheContext();
 }

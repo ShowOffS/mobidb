@@ -1,8 +1,9 @@
 package in.showoffs.mobidb.fragments;
 
+import android.content.Context;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +18,7 @@ import in.showoffs.mobidb.presenters.MovieListPresenter;
  */
 public class DashboardFragment extends Fragment implements MovieListListener{
 
-    MovieListPresenter movieListP = new MovieListImpl(this);
+    MovieListPresenter movieListP;
     public DashboardFragment() {
     }
 
@@ -30,6 +31,7 @@ public class DashboardFragment extends Fragment implements MovieListListener{
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        movieListP = new MovieListImpl(this);
         movieListP.loadMovieList();
     }
 
@@ -51,5 +53,10 @@ public class DashboardFragment extends Fragment implements MovieListListener{
     @Override
     public void onErrorLoading() {
 
+    }
+
+    @Override
+    public Context getTheContext() {
+        return getContext();
     }
 }
