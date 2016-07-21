@@ -1,7 +1,6 @@
 package in.showoffs.mobidb.presenters;
 
 import android.content.Context;
-import android.widget.Toast;
 
 import com.google.gson.reflect.TypeToken;
 import com.koushikdutta.async.future.FutureCallback;
@@ -10,6 +9,7 @@ import com.koushikdutta.ion.Ion;
 import java.net.URL;
 
 import in.showoffs.mobidb.API.Discover;
+import in.showoffs.mobidb.MovieDBApplication;
 import in.showoffs.mobidb.listeners.MovieListListener;
 import in.showoffs.mobidb.models.movies.MoviesResult;
 import in.showoffs.mobidb.utils.Constants;
@@ -44,15 +44,16 @@ public class MovieListImpl implements MovieListPresenter {
                     @Override
                     public void onCompleted(Exception e, MoviesResult moviesResults) {
                         if (null == e) {
-                            Toast.makeText(context, "AAYA : " + moviesResults.getTotalPages(), Toast.LENGTH_SHORT).show();
+                            movieListListener.onMovieListLoaded(moviesResults);
+                        } else {
+                            movieListListener.onErrorLoading(e);
                         }
-                        movieListListener.onMovieListLoaded();
                     }
                 });
     }
 
     private URL getUrl() {
-        return new Discover().apiKey("e7b9dc793aaf39d52c764a4e1703be7d")
+        return new Discover().apiKey(MovieDBApplication.apiKey)
                 .sortBy(Constants.SORT_BY_POPULARITY_DESC)
                 .language("en")
                 .buildUrl();

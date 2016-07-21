@@ -4,12 +4,19 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import in.showoffs.mobidb.R;
+import in.showoffs.mobidb.apapters.MovieListAdapter;
 import in.showoffs.mobidb.listeners.MovieListListener;
+import in.showoffs.mobidb.models.movies.MoviesResult;
 import in.showoffs.mobidb.presenters.MovieListImpl;
 import in.showoffs.mobidb.presenters.MovieListPresenter;
 
@@ -18,6 +25,12 @@ import in.showoffs.mobidb.presenters.MovieListPresenter;
  */
 public class DashboardFragment extends Fragment implements MovieListListener{
 
+    @BindView(R.id.movie_list_recycler)
+    RecyclerView movieListRecycler;
+    GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 3, LinearLayoutManager.VERTICAL,
+            false);
+    MovieListAdapter adapter = new MovieListAdapter();
+
     MovieListPresenter movieListP;
     public DashboardFragment() {
     }
@@ -25,7 +38,12 @@ public class DashboardFragment extends Fragment implements MovieListListener{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_dashboard, container, false);
+        View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
+        ButterKnife.bind(this, view);
+        movieListRecycler.setAdapter(adapter);
+        movieListRecycler.setLayoutManager(layoutManager);
+
+        return view;
     }
 
     @Override
@@ -46,13 +64,13 @@ public class DashboardFragment extends Fragment implements MovieListListener{
     }
 
     @Override
-    public void onMovieListLoaded() {
-
+    public void onMovieListLoaded(MoviesResult moviesResult) {
+        adapter.add(moviesResult.getMovies());
     }
 
     @Override
-    public void onErrorLoading() {
-
+    public void onErrorLoading(Exception e) {
+        showError(true);
     }
 
     @Override
