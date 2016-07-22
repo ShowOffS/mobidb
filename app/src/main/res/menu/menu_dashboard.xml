@@ -1,9 +1,23 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="in.showoffs.mobidb.activities.Dashboard" >
-    <item android:id="@+id/action_settings"
-        android:title="{faw-sort}"
+    tools:context="in.showoffs.mobidb.activities.Dashboard">
+    <item
+        android:id="@+id/action_settings"
         android:orderInCategory="100"
-        app:showAsAction="always" />
+        android:title="@string/sort"
+        app:showAsAction="always">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/popular.menu"
+                    android:title="@string/most_popular"
+                    android:titleCondensed="@string/popular" />
+                <item
+                    android:id="@+id/rated.menu"
+                    android:title="@string/highest_rated"
+                    android:titleCondensed="@string/rating" />
+            </group>
+        </menu>
+    </item>
 </menu>

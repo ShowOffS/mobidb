@@ -1,13 +1,16 @@
 
 package in.showoffs.mobidb.models.movies;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MoviesResult {
+public class MoviesResult implements Parcelable {
 
     @SerializedName("page")
     @Expose
@@ -94,4 +97,39 @@ public class MoviesResult {
         this.totalPages = totalPages;
     }
 
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(this.page);
+        dest.writeTypedList(this.movies);
+        dest.writeValue(this.totalResults);
+        dest.writeValue(this.totalPages);
+    }
+
+    public MoviesResult() {
+    }
+
+    protected MoviesResult(Parcel in) {
+        this.page = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.movies = in.createTypedArrayList(Movie.CREATOR);
+        this.totalResults = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.totalPages = (Integer) in.readValue(Integer.class.getClassLoader());
+    }
+
+    public static final Parcelable.Creator<MoviesResult> CREATOR = new Parcelable.Creator<MoviesResult>() {
+        @Override
+        public MoviesResult createFromParcel(Parcel source) {
+            return new MoviesResult(source);
+        }
+
+        @Override
+        public MoviesResult[] newArray(int size) {
+            return new MoviesResult[size];
+        }
+    };
 }

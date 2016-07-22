@@ -32,10 +32,10 @@ public class MovieListImpl implements MovieListPresenter {
     }
 
     @Override
-    public void loadMovieList() {
+    public void loadMovieList(int page, String sortBy) {
         movieListListener.showLoading(true);
         movieListListener.showError(false);
-        URL url = getUrl();
+        URL url = getUrl(page, sortBy);
         System.out.println(url);
         Ion.with(context)
                 .load(url.toString())
@@ -52,10 +52,14 @@ public class MovieListImpl implements MovieListPresenter {
                 });
     }
 
-    private URL getUrl() {
+    private URL getUrl(int page, String sortBy) {
+        if (sortBy == null) {
+            sortBy = Constants.SORT_BY_POPULARITY_DESC;
+        }
         return new Discover().apiKey(MovieDBApplication.apiKey)
-                .sortBy(Constants.SORT_BY_POPULARITY_DESC)
+                .sortBy(sortBy)
                 .language("en")
+                .page(page)
                 .buildUrl();
     }
 

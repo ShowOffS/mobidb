@@ -8,6 +8,8 @@ import android.util.Log;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 
+import in.showoffs.mobidb.utils.SharedPrefUtils;
+
 /**
  * Created by nagraj on 22/7/16.
  */
@@ -20,6 +22,7 @@ public class MovieDBApplication extends Application {
     public void onCreate() {
         super.onCreate();
         Fresco.initialize(this);
+        SharedPrefUtils.initialize(this);
         try {
             ApplicationInfo ai = getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA);
             Bundle bundle = ai.metaData;

@@ -6,12 +6,18 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <ImageView
+    <in.showoffs.mobidb.custom.ConstrainedImageView
         android:id="@+id/imageView"
+        android:transitionName="poster"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
         android:minHeight="40dp"
-        android:scaleType="fitXY"/>
+        android:scaleType="fitXY"
+        fresco:progressBarImage="@drawable/loading"
+        fresco:progressBarImageScaleType="centerInside"
+        fresco:progressBarAutoRotateInterval="1000"
+        fresco:failureImage="@drawable/error_loading"
+        fresco:failureImageScaleType="centerInside"/>
 
 </LinearLayout>

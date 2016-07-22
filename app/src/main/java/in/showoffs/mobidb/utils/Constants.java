@@ -14,4 +14,7 @@ public class Constants {
     public static final String SORT_BY_POPULARITY_ASC = "popularity.asc";
     public static final String SORT_BY_POPULARITY_DESC = "popularity.desc";
     public static final String SORT_BY_VOTE_AVERAGE_DESC = "vote_average.desc";
+    public static final String SHARED_PREF = "ShowOffS";
+    public static final String SHORT_FIED = "sortField";
+    public static final String MOVIE = "MOVIE";
 }
