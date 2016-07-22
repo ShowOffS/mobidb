@@ -5,6 +5,8 @@
     <string name="highest_rated">Highest Rated</string>
     <string name="sort">Sort</string>
     <string name="popular">Popular</string>
-    <string name="rating">Rating</string>
+    <string name="rating">Rating : </string>
     <string name="title_activity_movie_details">MovieDetails</string>
+    <string name="released_on">Released On : </string>
+    <string name="popularity">Popularity :</string>
 </resources>

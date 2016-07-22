@@ -1,6 +1,6 @@
 package in.showoffs.mobidb.fragments;
 
-import android.net.Uri;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,6 +14,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import in.showoffs.mobidb.R;
 import in.showoffs.mobidb.activities.MovieDetails;
+import in.showoffs.mobidb.databinding.FragmentMovieDetailsBinding;
+import in.showoffs.mobidb.models.movies.Movie;
+import in.showoffs.mobidb.utils.Constants;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -24,6 +27,7 @@ public class MovieDetailsFragment extends Fragment {
     @BindView(R.id.imageView)
     SimpleDraweeView imageView;
 
+    Movie movie;
     public MovieDetailsFragment() {
     }
 
@@ -31,14 +35,17 @@ public class MovieDetailsFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         uri = getActivity().getIntent().getStringExtra(MovieDetails.URI);
+        movie = getActivity().getIntent().getParcelableExtra(Constants.MOVIE);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_movie_details, container, false);
+        FragmentMovieDetailsBinding binding = DataBindingUtil.inflate(inflater,R.layout.fragment_movie_details, container, false);
+        View view = binding.getRoot();
         ButterKnife.bind(this, view);
-        imageView.setImageURI(Uri.parse(uri));
+        binding.setMovie(movie);
+        imageView.setImageURI(uri);
         return view;
     }
 

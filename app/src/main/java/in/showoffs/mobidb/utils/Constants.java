@@ -17,4 +17,5 @@ public class Constants {
     public static final String SHARED_PREF = "ShowOffS";
     public static final String SHORT_FIED = "sortField";
     public static final String MOVIE = "MOVIE";
+    public static final String BASE_IMAGE_URL = "http://image.tmdb.org/t/p/w342";
 }
