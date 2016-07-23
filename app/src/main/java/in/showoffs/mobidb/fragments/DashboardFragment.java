@@ -57,6 +57,12 @@ public class DashboardFragment extends Fragment implements MovieListListener,
             false);
     private MovieListAdapter adapter = new MovieListAdapter();
     private MovieListPresenter movieListP;
+
+    DashboardInteractionListener interactionListener;
+
+    public interface DashboardInteractionListener{
+        void setTitle(String title);
+    }
     private RecyclerView.OnScrollListener mRecyclerViewOnScrollListener = new RecyclerView.OnScrollListener() {
         @Override
         public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -124,6 +130,16 @@ public class DashboardFragment extends Fragment implements MovieListListener,
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof DashboardInteractionListener) {
+            interactionListener = (DashboardInteractionListener) context;
+        } else {
+            throw new ClassCastException(context.getClass().getName() + "Must implement DashboardInteractionListener");
+        }
+    }
+
+    @Override
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
         if (savedInstanceState != null) {
@@ -153,8 +169,16 @@ public class DashboardFragment extends Fragment implements MovieListListener,
         super.onPrepareOptionsMenu(menu);
         if (sortBy.equals(Constants.SORT_BY_POPULARITY_DESC)) {
             menu.getItem(0).getSubMenu().getItem(0).setChecked(true);
+            setTitle(Constants.POPULAR_MOVIES);
         } else if (sortBy.equals(Constants.SORT_BY_VOTE_AVERAGE_DESC)) {
             menu.getItem(0).getSubMenu().getItem(1).setChecked(true);
+            setTitle(Constants.TOP_RATED);
+        }
+    }
+
+    private void setTitle(String title) {
+        if (interactionListener != null) {
+            interactionListener.setTitle(title);
         }
     }
 
@@ -168,6 +192,7 @@ public class DashboardFragment extends Fragment implements MovieListListener,
                 adapter.clear();
                 adapter.notifyDataSetChanged();
                 movieListP.loadMovieList(0, sortBy);
+                setTitle(Constants.POPULAR_MOVIES);
                 break;
             }
             case R.id.rated_menu: {
@@ -177,6 +202,7 @@ public class DashboardFragment extends Fragment implements MovieListListener,
                 adapter.clear();
                 adapter.notifyDataSetChanged();
                 movieListP.loadMovieList(0, sortBy);
+                setTitle(Constants.TOP_RATED);
                 break;
             }
         }
@@ -195,10 +221,10 @@ public class DashboardFragment extends Fragment implements MovieListListener,
 
     @Override
     public void onMovieListLoaded(MoviesResult moviesResult) {
+        mIsLoading = false;
         page = moviesResult.getPage();
         totalPages = moviesResult.getTotalPages();
         adapter.add(moviesResult.getMovies());
-        mIsLoading = false;
     }
 
     @Override
@@ -214,6 +240,7 @@ public class DashboardFragment extends Fragment implements MovieListListener,
     @Override
     public void showMovieDetails(View view, Movie movie) {
         Intent intent = new Intent(view.getContext(), MovieDetails.class);
+        intent.putExtra(Constants.TITLE, movie.getTitle());
         intent.putExtra(Constants.MOVIE, movie);
         intent.putExtra(MovieDetails.URI, (String.format("%s%s", "http://image.tmdb.org/t/p/w342", movie.getPosterPath())));
         Pair<View, String> p1 = Pair.create(view, "poster");

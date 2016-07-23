@@ -6,8 +6,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import in.showoffs.mobidb.R;
+import in.showoffs.mobidb.fragments.DashboardFragment;
 
-public class Dashboard extends BaseActivity {
+public class Dashboard extends BaseActivity implements DashboardFragment.DashboardInteractionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,5 +38,10 @@ public class Dashboard extends BaseActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void setTitle(String title) {
+        getSupportActionBar().setTitle(title);
     }
 }

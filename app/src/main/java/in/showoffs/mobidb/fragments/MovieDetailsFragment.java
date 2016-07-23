@@ -23,11 +23,11 @@ import in.showoffs.mobidb.utils.Constants;
  */
 public class MovieDetailsFragment extends Fragment {
 
-    String uri;
+    private String uri;
     @BindView(R.id.imageView)
     SimpleDraweeView imageView;
 
-    Movie movie;
+    private Movie movie;
     public MovieDetailsFragment() {
     }
 

@@ -18,4 +18,7 @@ public class Constants {
     public static final String SHORT_FIED = "sortField";
     public static final String MOVIE = "MOVIE";
     public static final String BASE_IMAGE_URL = "http://image.tmdb.org/t/p/w342";
+    public static final String TITLE = "TITLE";
+    public static final String POPULAR_MOVIES = "Popular Movies";
+    public static final String TOP_RATED = "Top Rated Movies";
 }

@@ -6,6 +6,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import in.showoffs.mobidb.R;
+import in.showoffs.mobidb.utils.Constants;
 
 public class MovieDetails extends AppCompatActivity {
 
@@ -19,6 +20,8 @@ public class MovieDetails extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        String title = getIntent().getStringExtra(Constants.TITLE);
+        getSupportActionBar().setTitle(title);
     }
 
     @Override
