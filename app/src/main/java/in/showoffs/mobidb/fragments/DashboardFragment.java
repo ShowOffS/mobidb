@@ -17,12 +17,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import icepick.State;
 import in.showoffs.mobidb.R;
 import in.showoffs.mobidb.activities.MovieDetails;
@@ -46,23 +49,22 @@ public class DashboardFragment extends Fragment implements MovieListListener,
     private static final String SORT_BY = "SORT_BY";
     @BindView(R.id.movie_list_recycler)
     RecyclerView movieListRecycler;
+    @BindView(R.id.loader)
+    ProgressBar loader;
+    @BindView(R.id.error)
+    LinearLayout error;
     @State
     int page = 0;
     @State
     int totalPages = 0;
     @State
     boolean mIsLoading = true;
+    DashboardInteractionListener interactionListener;
     private String sortBy = Constants.SORT_BY_POPULARITY_DESC;
     private GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 3, LinearLayoutManager.VERTICAL,
             false);
     private MovieListAdapter adapter = new MovieListAdapter();
     private MovieListPresenter movieListP;
-
-    DashboardInteractionListener interactionListener;
-
-    public interface DashboardInteractionListener{
-        void setTitle(String title);
-    }
     private RecyclerView.OnScrollListener mRecyclerViewOnScrollListener = new RecyclerView.OnScrollListener() {
         @Override
         public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -91,6 +93,32 @@ public class DashboardFragment extends Fragment implements MovieListListener,
     };
 
     public DashboardFragment() {
+    }
+
+    @OnClick(R.id.error)
+    public void retry(View view) {
+        movieListP.loadMovieList(0, sortBy);
+    }
+
+    @Override
+    public void showMovieDetails(View view, Movie movie) {
+        Intent intent = new Intent(view.getContext(), MovieDetails.class);
+        intent.putExtra(Constants.TITLE, movie.getTitle());
+        intent.putExtra(Constants.MOVIE, movie);
+        intent.putExtra(MovieDetails.URI, (String.format("%s%s", "http://image.tmdb.org/t/p/w342", movie.getPosterPath())));
+        Pair<View, String> p1 = Pair.create(view, "poster");
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), p1);
+        getActivity().startActivity(intent, options.toBundle());
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof DashboardInteractionListener) {
+            interactionListener = (DashboardInteractionListener) context;
+        } else {
+            throw new ClassCastException(context.getClass().getName() + "Must implement DashboardInteractionListener");
+        }
     }
 
     @Override
@@ -126,16 +154,6 @@ public class DashboardFragment extends Fragment implements MovieListListener,
             mIsLoading = true;
         } else {
             mIsLoading = false;
-        }
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof DashboardInteractionListener) {
-            interactionListener = (DashboardInteractionListener) context;
-        } else {
-            throw new ClassCastException(context.getClass().getName() + "Must implement DashboardInteractionListener");
         }
     }
 
@@ -176,6 +194,16 @@ public class DashboardFragment extends Fragment implements MovieListListener,
         }
     }
 
+    @Override
+    public void showLoading(boolean show) {
+        if (adapter.getItemCount() > 0) return;
+        if (show) {
+            loader.setVisibility(View.VISIBLE);
+        } else {
+            loader.setVisibility(View.GONE);
+        }
+    }
+
     private void setTitle(String title) {
         if (interactionListener != null) {
             interactionListener.setTitle(title);
@@ -209,19 +237,25 @@ public class DashboardFragment extends Fragment implements MovieListListener,
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void showLoading(boolean show) {
-
+    public interface DashboardInteractionListener {
+        void setTitle(String title);
     }
 
     @Override
     public void showError(boolean show) {
-
+        if (adapter.getItemCount() > 0) return;
+        if (show) {
+            error.setVisibility(View.VISIBLE);
+        } else {
+            error.setVisibility(View.GONE);
+        }
     }
 
     @Override
     public void onMovieListLoaded(MoviesResult moviesResult) {
         mIsLoading = false;
+        showLoading(false);
+        showError(false);
         page = moviesResult.getPage();
         totalPages = moviesResult.getTotalPages();
         adapter.add(moviesResult.getMovies());
@@ -229,22 +263,12 @@ public class DashboardFragment extends Fragment implements MovieListListener,
 
     @Override
     public void onErrorLoading(Exception e) {
+        mIsLoading = false;
         showError(true);
     }
 
     @Override
     public Context getTheContext() {
         return getContext();
-    }
-
-    @Override
-    public void showMovieDetails(View view, Movie movie) {
-        Intent intent = new Intent(view.getContext(), MovieDetails.class);
-        intent.putExtra(Constants.TITLE, movie.getTitle());
-        intent.putExtra(Constants.MOVIE, movie);
-        intent.putExtra(MovieDetails.URI, (String.format("%s%s", "http://image.tmdb.org/t/p/w342", movie.getPosterPath())));
-        Pair<View, String> p1 = Pair.create(view, "poster");
-        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), p1);
-        getActivity().startActivity(intent, options.toBundle());
     }
 }

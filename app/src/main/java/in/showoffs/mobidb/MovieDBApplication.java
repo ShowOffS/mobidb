@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.jakewharton.threetenabp.AndroidThreeTen;
 
 import in.showoffs.mobidb.utils.SharedPrefUtils;
 
@@ -23,6 +24,7 @@ public class MovieDBApplication extends Application {
         super.onCreate();
         Fresco.initialize(this);
         SharedPrefUtils.initialize(this);
+        AndroidThreeTen.init(this);
         try {
             ApplicationInfo ai = getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA);
             Bundle bundle = ai.metaData;

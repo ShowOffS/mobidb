@@ -14,7 +14,7 @@ import butterknife.ButterKnife;
 import in.showoffs.mobidb.R;
 import in.showoffs.mobidb.custom.ConstrainedImageView;
 import in.showoffs.mobidb.models.movies.Movie;
-import in.showoffs.mobidb.utils.Constants;
+import in.showoffs.mobidb.utils.SharedPrefUtils;
 
 /**
  * Created by nagraj on 22/7/16
@@ -38,7 +38,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        holder.imageView.setImageURI(Uri.parse(String.format("%s%s", Constants.BASE_IMAGE_URL, getItem(position).getPosterPath())));
+        holder.imageView.setImageURI(Uri.parse(String.format("%s%s", SharedPrefUtils.getBaseImageUrl(), getItem(position).getPosterPath())));
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

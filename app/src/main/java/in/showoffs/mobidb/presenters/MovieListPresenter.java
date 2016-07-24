@@ -6,6 +6,4 @@ package in.showoffs.mobidb.presenters;
 
 public interface MovieListPresenter {
     void loadMovieList(int page, String sortBy);
-    void refreshLoadData();
-    void sortData();
 }

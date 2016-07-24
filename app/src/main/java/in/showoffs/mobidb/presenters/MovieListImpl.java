@@ -23,7 +23,7 @@ public class MovieListImpl implements MovieListPresenter {
     MovieListListener movieListListener;
     Context context;
 
-    public MovieListImpl(MovieListListener movieListListener){
+    public MovieListImpl(MovieListListener movieListListener) {
         if (movieListListener == null) {
             throw new RuntimeException("MovieListListener is needed.");
         }
@@ -39,7 +39,8 @@ public class MovieListImpl implements MovieListPresenter {
         System.out.println(url);
         Ion.with(context)
                 .load(url.toString())
-                .as(new TypeToken<MoviesResult>(){})
+                .as(new TypeToken<MoviesResult>() {
+                })
                 .setCallback(new FutureCallback<MoviesResult>() {
                     @Override
                     public void onCompleted(Exception e, MoviesResult moviesResults) {
@@ -62,16 +63,5 @@ public class MovieListImpl implements MovieListPresenter {
                 .page(page)
                 .buildUrl();
     }
-
-    @Override
-    public void refreshLoadData() {
-
-    }
-
-    @Override
-    public void sortData() {
-
-    }
-
 
 }

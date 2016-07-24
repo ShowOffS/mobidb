@@ -16,6 +16,7 @@ public class Dashboard extends BaseActivity implements DashboardFragment.Dashboa
         setContentView(R.layout.activity_dashboard);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
 
     @Override

@@ -32,7 +32,7 @@
                 android:minHeight="40dp"
                 android:scaleType="fitXY"
                 android:transitionName="poster"
-                fresco:failureImage="@drawable/error_loading"
+                fresco:failureImage="@drawable/customactivityoncrash_error_image"
                 fresco:failureImageScaleType="centerInside"
                 fresco:progressBarAutoRotateInterval="1000"
                 fresco:progressBarImage="@drawable/loading"
