@@ -161,6 +161,7 @@ public class DashboardFragment extends Fragment implements MovieListListener,
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
         if (savedInstanceState != null) {
+            showLoading(false);
             page = savedInstanceState.getInt(PAGE);
             totalPages = savedInstanceState.getInt(TOTAL_PAGE);
             sortBy = savedInstanceState.getString(SORT_BY);
@@ -196,8 +197,8 @@ public class DashboardFragment extends Fragment implements MovieListListener,
 
     @Override
     public void showLoading(boolean show) {
-        if (adapter.getItemCount() > 0) return;
         if (show) {
+            if (adapter.getItemCount() > 0) return;
             loader.setVisibility(View.VISIBLE);
         } else {
             loader.setVisibility(View.GONE);

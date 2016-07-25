@@ -5,9 +5,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
+    android:fitsSystemWindows="false"
     tools:context="in.showoffs.mobidb.activities.Splash">
 
-    <include layout="@layout/content_splash"/>
+    <include layout="@layout/content_splash"
+             android:fitsSystemWindows="false"/>
 
 </android.support.design.widget.CoordinatorLayout>
