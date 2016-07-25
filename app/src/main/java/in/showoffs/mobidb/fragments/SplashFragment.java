@@ -7,10 +7,10 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -35,7 +35,9 @@ public class SplashFragment extends Fragment implements ConfigurationListener {
     @BindView(R.id.loader)
     ProgressBar loader;
     @BindView(R.id.error)
-    LinearLayout error;
+    CardView error;
+    @BindView(R.id.error_background)
+    View errorBackground;
 
     public SplashFragment() {
     }
@@ -64,9 +66,15 @@ public class SplashFragment extends Fragment implements ConfigurationListener {
 
     @Override
     public void onErrorLoadingConfig(Exception e) {
-        loader.setVisibility(View.GONE);
-        error.setVisibility(View.VISIBLE);
-        Toast.makeText(getContext(), "Error loading Configuration. Try again later.", Toast.LENGTH_SHORT).show();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                loader.setVisibility(View.GONE);
+                errorBackground.setVisibility(View.VISIBLE);
+                error.setVisibility(View.VISIBLE);
+                Toast.makeText(getContext(), "Error loading Configuration. Try again later.", Toast.LENGTH_SHORT).show();
+            }
+        }, 500);
     }
 
     @Override
@@ -92,8 +100,14 @@ public class SplashFragment extends Fragment implements ConfigurationListener {
 
     @OnClick(R.id.error)
     public void retry(View view) {
-        error.setVisibility(View.GONE);
-        loader.setVisibility(View.VISIBLE);
-        confP.loadConfiguration(SharedPrefUtils.getLastConfigSaveTime());
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                errorBackground.setVisibility(View.GONE);
+                error.setVisibility(View.GONE);
+                loader.setVisibility(View.VISIBLE);
+                confP.loadConfiguration(SharedPrefUtils.getLastConfigSaveTime());
+            }
+        }, 500);
     }
 }
